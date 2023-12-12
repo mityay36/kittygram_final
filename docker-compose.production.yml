@@ -12,19 +12,19 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    image: mityay36/kittygram_final_backend/
+    image: mityay36/kittygram_final_backend
     env_file: .env
     volumes:
       - static:/backend_static
       - media:/media
   frontend:
     env_file: .env
-    image: mityay36/kittygram_final_frontend/
+    image: mityay36/kittygram_final_frontend
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
-    image: mityay36/kittygram_final_gateway/
+    image: mityay36/kittygram_final_gateway
     env_file: .env
     ports:
       - 9000:80
