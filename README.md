@@ -29,67 +29,67 @@ Make your own .env file in main directory. All required variables are listed in 
  
 Perform Docker images
 
-  cd frontend
-  docker build -t YOUR_USERNAME/kittygram_frontend .
-  cd ../backend
-  docker build -t YOUR_USERNAME/kittygram_backend .
-  cd ../nginx
-  docker build -t YOUR_USERNAME/kittygram_gateway . 
+  	cd frontend
+  	docker build -t YOUR_USERNAME/kittygram_frontend .
+  	cd ../backend
+  	docker build -t YOUR_USERNAME/kittygram_backend .
+  	cd ../nginx
+  	docker build -t YOUR_USERNAME/kittygram_gateway . 
 
 Push your images to Docker Hub
 
-  docker push YOUR_USERNAME/kittygram_frontend
-  docker push YOUR_USERNAME/kittygram_backend
-  docker push YOUR_USERNAME/kittygram_gateway
+  	docker push YOUR_USERNAME/kittygram_frontend
+  	docker push YOUR_USERNAME/kittygram_backend
+  	docker push YOUR_USERNAME/kittygram_gateway
 
 Connect to our remote server
 
-  ssh -i PATH_TO_SSH_KEY/SSH_KEY_NAME YOUR_USERNAME@SERVER_IP_ADDRESS 
+  	ssh -i PATH_TO_SSH_KEY/SSH_KEY_NAME YOUR_USERNAME@SERVER_IP_ADDRESS 
 
 Make an "kittygram" directory
 
-  mkdir kittygram
+  	mkdir kittygram
 
 Download DockerCompose on the server
 
-  sudo apt update
-  sudo apt install curl
-  curl -fsSL https://get.docker.com -o get-docker.sh
-  sudo sh get-docker.sh
-  sudo apt install docker-compose
+  	sudo apt update
+  	sudo apt install curl
+  	curl -fsSL https://get.docker.com -o get-docker.sh
+  	sudo sh get-docker.sh
+  	sudo apt install docker-compose
 
 Copy docker-compose.production.yml and .env files to your server
 
-  scp -i PATH_TO_SSH_KEY/SSH_KEY_NAME docker-compose.production.yml YOUR_USERNAME@SERVER_IP_ADDRESS:/home/YOUR_USERNAME/kittygram/docker-compose.production.yml
+  	scp -i PATH_TO_SSH_KEY/SSH_KEY_NAME docker-compose.production.yml YOUR_USERNAME@SERVER_IP_ADDRESS:/home/YOUR_USERNAME/kittygram/docker-compose.production.yml
 
 Start Docker Compose in daemon mode
 
-  sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml up -d
+  	sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml up -d
 
 Make migrations and collect static of your project
 
-  sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml exec backend python manage.py migrate
-  sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml exec backend python manage.py collectstatic
-  sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
+  	sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml exec backend python manage.py migrate
+  	sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml exec backend python manage.py collectstatic
+  	sudo docker-compose -f /home/YOUR_USERNAME/kittygram/docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
 
 Open nginx configuration file
 
-  sudo nano /etc/nginx/sites-enabled/default
+  	sudo nano /etc/nginx/sites-enabled/default
 
 Update your server location section
 
-  location / {
-    proxy_set_header Host $http_host;
-    proxy_pass http://127.0.0.1:9000;
-  }
+  	location / {
+    		proxy_set_header Host $http_host;
+    		proxy_pass http://127.0.0.1:9000;
+  	}
 
 Make sure the cof file is ok
 
-  sudo nginx -t
+  	sudo nginx -t
 
 Reload nginx
 
-  sudo service nginx reload
+  	sudo service nginx reload
   
 
 ## Author
